@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sistema SCADA-Login</title>
+    <link rel="stylesheet" href="css/StyleLogin.css">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico">
+</head>
+    <body class="text-center" cz-shortcut-listen="true">
+        <form class="form-signin" id="LoginForm">
+            <img class="mb-4" src="img/UDB-Logo.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Iniciar Sesion</h1>
+            <label for="inputEmail" class="sr-only">Usuario</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="administrador.scada" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="*********" required>
+            <p id="Error" class="alert alert-danger d-none">¡Error! Usuario se encuentra Deshabilitado</p>
+            <button class="btn btn-lg btn-primary btn-block" id="btnLogin">Iniciar Sesión</button>
+            <img src="img/loading.gif" id="Status" class="d-none" width="72" height="72">
+            <p class="mt-5 mb-3 text-muted">© 2017-2019</p>
+        </form>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/all.js"></script>
+    <script src="js/LoginScript.js"></script>
+</body>
+</html>

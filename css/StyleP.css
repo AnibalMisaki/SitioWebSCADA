@@ -1,0 +1,62 @@
+@import url("bootstrap.css");
+@import url("all.css");
+@import url("bootstrap-picker.css");
+@import url("toastr.css");
+@import url("daterangepicker.css");
+@import url("datatables.css");
+@import url("datatables-responsive.css");
+
+.mt-2_5{
+    margin-top: .25rem !important;
+}
+.mt-2_7{
+    margin-top: .65rem !important;
+}
+.ml-4_5{
+    margin-left: 1.75rem !important;
+}
+.mt-3_5{
+    margin-top: 1.25rem !important;
+}
+.mt-4_5{
+    margin-top: 1.75rem !important;
+}
+.pt-2_5{
+    padding-top: .75rem !important;
+}
+
+.daterangepicker .drp-calendar.right {
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+}
+
+.daterangepicker .drp-calendar.right tbody {
+    display: none !important;
+}
+
+.daterangepicker .drp-calendar.right thead > tr:nth-child(2) {
+    display: none !important;
+}
+
+.daterangepicker .drp-calendar.right th.month {
+    display: none !important;
+}
+
+.daterangepicker .drp-calendar.right .calendar-table {
+    background: transparent !important;
+}
+
+.daterangepicker .daterangepicker.ltr .ranges, .daterangepicker.ltr .drp-calendar {
+    float: none !important;
+}
+
+.daterangepicker .drp-calendar.right .daterangepicker_input {
+    position: absolute !important;
+}
+th::after{
+    content: "" !important;
+}
+th::before{
+    content: "" !important;
+}

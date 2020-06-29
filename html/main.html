@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/StyleMain.css">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../favicon.ico">
+    <title>Sistema SCADA</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg p-3 px-md-4 mb-3 bg-white border-bottom navbar-light shadow-sm">
+        <img src="../img/navbar-brand.png" class="navbar-brand p-0 m-0 mr-3" height="25" width="25" alt="">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Sistema SCADA</h5>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Archivo
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" id="MenubtnAgregarProyectoModal">Nuevo</a>
+                        <button class="dropdown-item" data-toggle="modal" data-target="#AbrirModal">Abrir</button>
+                        <a class="dropdown-item" id="MenubtnGuardarProyecto">Guardar</a>
+                        <a class="dropdown-item" id="MenubtnGuardarComoProyecto">Guardar como</a>
+                        <a class="dropdown-item" id="MenubtnCerrar">Cerrar</a>
+                        <a class="dropdown-item" id="MenubtnEliminar">Eliminar</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item btn btn-danger" id="MenubtnCerrarSession">Cerrar Sesión</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Configuraciones
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" id="MenubtnDispositivos"> Dispositivos</a>
+                        <a class="dropdown-item" id="MenubtnUsuarios">Usuarios</a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#CuentaModal">Cuenta</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Reportes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" id="MenubtnReportes" >Reportes por fecha</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+        <div class="row contenedor d-flex justify-content-center" id="WorkSpace">     
+            <img src="../img/loading.gif" class="mt-5" alt="" id="WorkSpaceStatus">
+            <h4 class="text-muted col-12 text-center" id="WorkSpacelblStatus">Cargando...</h4>  
+        </div>  
+    
+    <!--Modales -->
+
+        <!--Abrir Proyecto Modal -->
+        <div class="modal" id="AbrirModal" tabindex="-1" role="dialog" style="overflow-y:scroll; height: 100%;"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #4169E1;">
+                        <div class="media">
+                            <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                            </div>
+                        </div>
+                        <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                        <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                            aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body container-fluid" >
+                        <h4 class=" text-center">Abrir Proyecto</h4>
+                        <div id="AbrirModalBody" style="overflow-y: auto;max-height: 650px;overflow-x: hidden;">
+                            <img src="../img/loading.gif" id="ModalAbrirStatus" class="ml-auto mr-auto d-block">
+                            <h5 class="text-muted text-center" id="ModalAbrirlblStatus">Cargando...</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Abrir Proyecto Modal -->
+
+        <!--Eliminar Proyecto Modal -->
+        <div class="modal" id="EliminarModal" tabindex="-1" role="dialog" style="overflow-y:scroll; height: 100%;" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #4169E1;">
+                    <div class="media">
+                        <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                        <div class="media-body">
+                            <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                        </div>
+                    </div>
+                    <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                    <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                        aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body container-fluid" >
+                    <h4 class=" text-center">Eliminar Proyecto</h4>
+                    <div id="EliminarModalBody" style="overflow-y: auto;max-height: 650px;overflow-x: hidden;">
+                        <img src="../img/loading.gif" id="ModalEliminarStatus" class="ml-auto mr-auto d-block" >
+                        <h5 class="text-muted text-center" id="ModalEliminarlblStatus">Cargando...</h5>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- Eliminar Proyecto Modal -->
+
+        <!-- Usuarios Modal -->
+        <div class="modal" id="UsuariosModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg pb-2" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #4169E1;">
+                            <div class="media">
+                                <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                                <div class="media-body">
+                                    <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                                </div>
+                            </div>
+                            <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                            <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                                aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h4 class=" text-center">Gestión de Usuarios</h4>
+                            <div class="mt-4_5 p-2 border pb-4">
+                                <div class=" buttons font d-flex justify-content-between mb-3">
+                                    <span id="UsuariosCount" class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                        style="background-color: white;">Total: 0 Usuarios</span>
+                                    <div class="p-0">
+                                        <button class="button btn btn-white" id="UsuariosModalbtnAgregar"><span
+                                            class="mr-1"><img src="../img/Agregar.png" class="img-fluid"
+                                                alt=""></span>Agregar</button>
+                                        <select id="UsuariosModalcmbFilter">
+                                            <option value="All">Todos</option>
+                                            <option value="Administrador">Administradores</option>
+                                            <option value="Usuario">Usuarios</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="UsuariosModalBody" class="container-fluid font "
+                                    style="overflow-y: auto;height: 650px;">
+                                    <!-- Contenido -->
+                                    <div>
+                                        <img src="../img/loading.gif" id="UsuariosModalStatus" class="ml-auto mr-auto d-block">
+                                        <h5 class="text-muted text-center" id="UsuariosModallblStatus">Obteniendo Usuarios...</h5>
+                                    </div>
+                                    <!-- Contenido -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!-- Usuarios Modal  -->
+
+        <!-- Reportes Modal -->
+        <div class="modal" id="ReportesModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg pb-2" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #4169E1;">
+                                <div class="media">
+                                    <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                                    <div class="media-body">
+                                        <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                                    </div>
+                                </div>
+                                <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                                <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                                    aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h4 class=" text-center">Reportes</h4>
+                                <div class="mt-4_5 p-1 border pb-4">
+                                    <div class="buttons font mb-3 d-flex justify-content-end">
+                                        <div class=" d-flex flex-row" id="ReportesModalFiltersDiv">   
+                                            <input type="text" name="dates" disabled id="ReportesModalDate" class=" form-control w-auto">
+                                            <select id="ReportesModalcmbFilter" class="w-50 bs-select selectpicker form-control color w-auto">
+                                                    <option value="white" data-content="<i class='fa fa-circle red' style='color:#ffffff;'></i>      Todos"></option>
+                                                    <option value="aqua" data-content="<i class='fa fa-circle red' style='color:#00ffff;'></i> Informativa"></option>
+                                                    <option value="green" data-content="<i class='fa fa-circle red' style='color:#008000;'></i>     Normal"></option>
+                                                    <option value="orange" data-content="<i class='fa fa-circle red' style='color:#ffa500;'></i>      Alta"></option>
+                                                    <option value="red" data-content="<i class='fa fa-circle red' style='color:#ff0000;'></i>      Critica"></option>
+                                            </select>
+                                            <button class="button btn btn-white w-auto" disabled id="ReportesModalbtnFiltrar" style="height: 40px;"><span
+                                                class="mr-1"><img id="btnFiltrarImage" src="../img/Reportes.png" class="img-fluid"
+                                                    alt=""></span>Filtrar</button>
+                                        </div>
+                                    </div>
+                                    <div id="ReportesModalBody" class="container-fluid font "
+                                        style="overflow-y: auto;height: 650px;">
+                                        <!-- Contenido -->
+                                        <div style="width: 100% !important">
+                                           <div id="ReportesStatus" class="d-none">
+                                                <img src="../img/loading.gif" id="ReportesModalStatus" class="ml-auto mr-auto d-block">
+                                                <h5 class="text-muted text-center" id="ReportesModallblStatus">Obteniendo Reportes...</h5>
+                                            </div>
+                                            <div id="ReportesContent" class="d-none table-responsive">
+                                                <table id="ReportesModalTable" class="responsive table table-bordered nowrap"  >
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="all">Nivel: </th>
+                                                            <th class="all"> Nombre Variable: </th>
+                                                            <th class="all">Fecha: </th>
+                                                            <th class="all">Hora: </th>
+                                                            <th class="all">Valor: </th>
+                                                            <th class="all">Usuario: </th>
+                                                            <th class="none">Nombre Dispositivo: </th>
+                                                            <th class="none">Condicion: </th>
+                                                            <th class="none">Mensaje: </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="ReportesModalTableBody">
+                                                      
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- Contenido -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+        <!-- Reportes Modal -->
+
+                <!-- Importar Dispositivo Modal -->
+                <div class="modal" id="ImportarDispositivoModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog pb-2 modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #4169E1;">
+                                <div class="media">
+                                    <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                                    <div class="media-body">
+                                        <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                                    </div>
+                                </div>
+                                <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                                <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                                    aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body p-xl-4 p-lg-4 ">
+                                <h4 class="text-center" id="ImportarDispositivolblTitle">Importar Dispositivo</h4>
+                                <div class="mt-4_5 border p-2 pb-4">
+                                    <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                        <span class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                            style="background-color: white;">Dispositivos</span>
+                                        <div class="p-0 d-flex flex-row justify-content-end">
+                                            <span class="mt-2_7" style="background-color: white;">Proyecto:</span>
+                                            <select name="" class="form-control mt-2_5" style="max-width: 50%;" id="ImportarDispositivoModalcmbProyecto">
+        
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="font container-fluid" id="ImportarDispositivoModalBody" style="overflow-y: auto;height: 650px;">
+                                        <div class="ml-auto mr-auto d-block">
+                                            <img src="../img/loading.gif" id="ImportarDispositivoModalStatus" class="ml-auto mr-auto d-block" >
+                                            <h5 class="text-muted text-center" id="ImportarDispositivoModallblStatus">Obteniendo Dispositivos...</h5>
+                                        </div>
+                                    </div>
+                                    <!-- Formulario de Informacion -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Importar Dispositivo Modal-->
+
+        <!-- Agregar Usuario Modal -->
+        <div class="modal" id="AgregarUsuarioModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog  modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #4169E1;">
+                        <div class="media">
+                            <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                            </div>
+                        </div>
+                        <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                        <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                            aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-2 p-xl-4 p-lg-4 ">
+                        <h4 class=" text-center" id="AgregarUsuarioModallblTitle">Agregar Usuario</h4>
+                        <div class="mt-4_5 p-2 pb-2">
+                            <div class="border">
+                                <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                    <span class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                        style="background-color: white;">Informacion</span>
+                                </div>
+                                    <div class="font d-flex justify-content-center pb-3" id="AgregarVariableModalBody">
+                                        <div id="AgregarUsuarioModalStatusDiv" class="d-none">
+                                            <img src="../img/loading.gif" id="AgregarUsuarioModaltatus" class="ml-auto mr-auto d-block" >
+                                            <h5 class="text-muted text-center" id="AgregarUsuarioModalStatusblStatus">Obteniendo Datos...</h5>
+                                        </div>
+                                        <div class="pt-4" style="width: 90%;" id="AgregarUsuarioModalFormDiv">
+                                        <!-- Formulario de Informacion -->
+                                        <form id="AgregarUsuarioModalForm">
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Nombres:</span>
+                                                <input type="hidden" id="AgregarUsuarioModaltxtID">
+                                                <input class="input-modern w-50" id="AgregarUsuarioModaltxtNombres" type="text" name="Nombres" placeholder="Administrador">
+                                            </div>
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Usuario:</span>
+                                                <input class="input-modern w-50" id="AgregarUsuarioModaltxtUsuario" type="text" name="Usuario" placeholder="administrador.scada">
+                                            </div>
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Email:</span>
+                                                <input class="input-modern w-50" id="AgregarUsuarioModaltxtEmail" type="text" name="Email" placeholder="alguien@example.com">
+                                            </div>
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Tipo:</span>
+                                                <select name="Tipo" class="w-50 form-control" id="AgregarUsuarioModalcmbTipo">
+                                                    <option value="Administrador">Administrador</option>
+                                                    <option value="Usuario">Usuario</option>
+                                                </select>
+                                            </div>
+                                            <div class="p-0 mt-3 w-100 d-flex justify-content-center">
+                                                <button type="submit" class="button btn btn-white" id="AgregarUsuarioModalbtnAceptar">
+                                                    <span class="mr-1"><img src="../img/OK.png" class="img-fluid" alt=""></span>Aceptar
+                                                </button>
+                                                <img src="../img/loading.gif"  width="48" height="48" id="AgregarUsuarioModalS" class="d-none">   
+                                            </div>
+                                        </form>    
+                                        <!-- Formulario de Informacion-->
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Agregar Usuario Modal -->
+
+        <!-- Cuenta Modal -->
+        <div class="modal" id="CuentaModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog  modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #4169E1;">
+                        <div class="media">
+                            <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                            </div>
+                        </div>
+                        <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                        <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                            aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-2 p-xl-4 p-lg-4 ">
+                        <h4 class=" text-center" id="AgregarUsuarioModallblTitle">Cuenta</h4>
+                        <div class="mt-4_5 p-2 pb-2">
+                            <div class="border">
+                                <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                    <span class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                        style="background-color: white;">Informacion</span>
+                                </div>
+                                    <div class="font d-flex justify-content-center pb-3" id="AgregarVariableModalBody">
+                                        <div id="AgregarUsuarioModalStatusDiv" class="d-none">
+                                            <img src="../img/loading.gif" id="AgregarUsuarioModaltatus" class="ml-auto mr-auto d-block" >
+                                            <h5 class="text-muted text-center" id="AgregarUsuarioModalStatusblStatus">Obteniendo Datos...</h5>
+                                        </div>
+                                        <div class="pt-4" style="width: 90%;" id="AgregarUsuarioModalFormDiv">
+                                        <!-- Formulario de Informacion -->
+                                        <div id="CuentaModalStatus">
+                                            <img src="../img/loading.gif" id="CuentaModalStatus" class="ml-auto mr-auto d-block" >
+                                            <h5 class="text-muted text-center" id="CuentaModallblStatus">Obteniendo Datos...</h5>
+                                        </div>
+                                        <form id="CuentaModalForm">
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Nombres:</span>
+                                                <input type="hidden" name="Id" id="CuentaModaltxtID">
+                                                <input class="input-modern w-50" id="CuentaModaltxtNombres" type="text" name="Nombres">
+                                            </div>
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Usuario:</span>
+                                                <input class="input-modern w-50" id="CuentaModaltxtUsuario" type="text" name="Usuario">
+                                            </div>
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Email:</span>
+                                                <input class="input-modern w-50" id="CuentaModaltxtEmail" type="text" name="Email">
+                                            </div>
+                                            <div class="d-flex flex-row p-1">
+                                                <span class="text-center d-flex pr-3 justify-content-end my-auto" style="width: 45%;">Contraseña:</span>
+                                                <button class="button btn btn-white" id="CuentaModalbtnContrasenia">
+                                                    <span class="mr-1"><img src="../img/Contrasenia.png" class="img-fluid" alt=""></span>Cambiar
+                                                </button>
+                                            </div>
+                                            <div class="p-0 mt-3 w-100 d-flex justify-content-center">
+                                                <button type="submit" class="button btn btn-white" id="CuentaModalbtnAceptar">
+                                                    <span class="mr-1"><img src="../img/OK.png" class="img-fluid" alt=""></span>Aceptar
+                                                </button>
+                                                <img src="../img/loading.gif"  width="48" height="48" id="AgregarUsuarioModalS" class="d-none">   
+                                            </div>
+                                        </form>    
+                                        <!-- Formulario de Informacion-->
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Cuenta Modal -->
+
+        <!-- Cambiar Contraseña Modal -->
+        <div class="modal" id="CambiarContraseniaModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog  modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #4169E1;">
+                        <div class="media">
+                            <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                            </div>
+                        </div>
+                        <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                        <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                            aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-xl-4 p-lg-4 ">
+                        <h4 class=" text-center" id="CambiarContraseniaModallblTitle">Contraseña</h4>
+                        <div class="mt-3 pb-1">
+                            <div class="border p-3">
+                                <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                    <span class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                        style="background-color: white;">Informacion</span>
+                                </div>
+                                <!-- Formulario de Informacion -->
+                                <form meth od="POST" id="CambiarContraseniaModalForm">
+                                    <input type="hidden" name="Id" id="CambiarContraseniaModaltxtID">
+                                    <div class="w-100 pt-3">
+                                        <span class="my-auto font w-50 ml-auto mr-auto d-block">Antigua Contraseña:</span>
+                                        <input class="input-modern w-50 ml-auto mr-auto d-block"
+                                            id="CambiarContraseniaModaltxtold" type="password" name="old"
+                                            placeholder="********">
+                                    </div>
+        
+                                    <div class="w-100">
+                                        <span class="my-auto font w-50 ml-auto mr-auto d-block">Nueva Contraseña:</span>
+                                        <input class="input-modern w-50 ml-auto mr-auto d-block"
+                                            id="CambiarContraseniaModaltxtnew1" type="password" name="new1"
+                                            placeholder="********">
+                                    </div>
+        
+                                    <div class="">
+                                        <span class="my-auto font w-50 ml-auto mr-auto d-block">Repetir Contraseña:</span>
+                                        <input class="input-modern w-50 ml-auto mr-auto d-block"
+                                            id="CambiarContraseniaModaltxtnew2" type="password" name="new2"
+                                            placeholder="********">
+                                    </div>
+        
+                                    <div class="p-0 mt-3 w-100 d-flex justify-content-center">
+                                        <button type="submit" class="button btn btn-white"
+                                            id="CambiarContraseniaModalbtnAceptar">
+                                            <span class="mr-1"><img src="../img/OK.png" class="img-fluid" alt=""></span>Aceptar
+                                        </button>
+                                        <img src="../img/loading.gif" width="48" height="48" id="CambiarContraseniaModalS"
+                                            class="d-none">
+                                    </div>
+                                </form>
+                                <!-- Formulario de Informacion-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- Cambiar Contraseña Modal -->
+        
+        <!-- Dispositivos Modal -->
+        <div class="modal" id="DispositivosModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg pb-2" role="document">
+                <div class="modal-content">
+                <div class="modal-header" style="background-color: #4169E1;">
+                    <div class="media">
+                        <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                        <div class="media-body">
+                            <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>   
+                        </div>
+                    </div>
+                    <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                    <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal" aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body"> 
+                        <h4 class="text-center">Gestión de Dispositivos</h4>
+                        <div class="mt-4_5 p-2 border pb-4" id="DriversContainer"> 
+                            <div class=" buttons font d-flex justify-content-between mb-3">
+                                <span id="DriversCount" class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0 buton-text" style="background-color: white !important;font-size:calc(.90em + 0.15vmin);">Total: 0 Dispositivos</span>
+                                <div id="DriversButtons" class="p-0">
+                                    <button class="button btn btn-white" id="DispositivosModalbtnImportar" disabled><span class="mr-1"><img src="../img/Importar-SM.png" class="img-fluid" alt=""></span>Importar</button>
+                                    <input type="file" class="d-none" accept=".json" id="DispositivosModalInputImportar">
+                                    <button class="button btn btn-white" id="DispositivosModalbtnAgregar" disabled><span class="mr-1"><img src="../img/Agregar.png" class="img-fluid" alt=""></span>Agregar</button>
+                                </div>
+                            </div>
+                            <div id="DispositivosModalBody" class="container-fluid font " style="overflow-y: auto;height: 650px;">
+                            <!-- Contenido -->  
+                                <div>
+                                    <img src="../img/loading.gif" id="ModalDispositivosStatus" class="ml-auto mr-auto d-block" >
+                                    <h5 class="text-muted text-center" id="ModalDispositivoslblStatus">Obteniendo Dispositivos...</h5>
+                                </div>
+                            <!-- Contenido -->
+                            </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- Dispositivos Modal -->
+        
+        <!-- Agregar Dispositivo Modal -->
+        <div class="modal" id="AgregarDispositivoModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog pb-2 modal-md modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #4169E1;">
+                        <div class="media">
+                            <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                            </div>
+                        </div>
+                        <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                        <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                            aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"> <!--  p-xl-4 p-lg-4  -->
+                        <h4 class="text-center" id="AgregarDispositivolblTitle">Agregar Dispositivo</h4>
+                        <div class="mt-4_5 p-2 border pb-4"> 
+                            <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                <span class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0 button-text"
+                                    style="background-color: white;">Informacion</span>
+                                <div class="p-0">
+                                    <button style="cursor: pointer;"  class="button btn btn-white" id="AgregarDispositivoModalbtnImportar"><span
+                                            class="mr-1"><img src="../img/Importar-SM.png" class="img-fluid"
+                                                alt=""></span>Importar</button>
+                                        <button class="button btn btn-white" type="submit" id="AgregarDispositivoModalbtnAceptar"><span
+                                            class="mr-1"><img src="../img/OK.png" class="img-fluid"
+                                                alt=""></span>Aceptar</button>
+                                </div>
+                            </div>
+                                <div class="pt-4 pl-2 pr-2 pb-3 row font">
+                                    <!-- Formulario de Informacion -->
+                                    <div class="col-6 col-sm-5 col-md-5 col-lg-6 col-xl-6 d-flex justify-content-center">
+                                        <img src="../img/NoImage.png" class="img-fluid" id="AgregarDispositivoModalPrevImagen" style="cursor: pointer;height: 240px;">
+                                    </div>
+                                    <div class="col-6 col-sm-7 col-md-7 col-lg-6 col-xl-6">
+                                            <input type="file" name="Imagen" class="d-none" id="AgregarDispositivoModalImagen">
+                                            <div class="d-flex flex-row p-2">
+                                                <span class="my-auto mr-2">Nombre:</span> <input id="AgregarDispositivoModaltxtNombre" type="text" class="input-modern"
+                                                    placeholder="Nombre">
+                                            </div>
+                                            <input type="hidden" id="AgregaDispositivoModaltxtGUID">
+                                            <div class="d-flex flex-row p-2">
+                                                <span class="my-auto mr-2">ID:</span> <input id="AgregarDispositivoModaltxtID" type="text" class="input-modern"
+                                                    value="230037001347343438323536" placeholder="ID">
+                                            </div>
+                                            <div class="d-flex flex-row p-2">
+                                                <span class="my-auto mr-2">Token:</span> <input id="AgregarDispositivoModaltxtToken" type="text" class="input-modern"
+                                                value="57f539fb1a8cc926f59ee72f3fd69e4c5adc3945"  placeholder="Token">
+                                            </div>
+                                            <div class="d-flex flex-row p-2">
+                                                <span class="my-auto mr-2">Tiempo:</span> <input id="AgregarDispositivoModaltxtTiempo" type="number" style="width: 35px;"
+                                                    value="30" min="5" max="240"><span class="my-auto ml-2">Segundos</span>
+                                            </div>
+                                        </div>
+                                    <!-- Formulario de Informacion -->
+                                </div>
+                            <br><br>
+                            <div class="mt-4_5 p-2 border pb-4">
+                                <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                    <span class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                        style="background-color: white;">Variables</span>
+                                    <div class="p-0">
+                                        <span id="VariablesCount" style="background-color: white;">Variables 0/12</span>
+                                        <button class="button btn btn-white" id="AgregarDispositivoModalbtnAgregarV"><span
+                                                class="mr-1"><img src="../img/Agregar.png" class="img-fluid"
+                                                    alt=""></span>Agregar</button>
+                                    </div>
+                                </div>
+                                <div class="pt-4 pr-2 pb-1 font" >
+                                    <!-- Contenido de las variables -->
+                                    <div class="d-flex flex-row justify-content-around" style="width: 98%;">
+                                        <span class="text-center p-0 m-0" style="width: 16.0%;font-size:calc(.85em + 0.15vmin)">Nombre:</span>
+                                        <span class="text-center p-0 m-0" style="width: 15.0%;font-size:calc(.85em + 0.15vmin)">Variable:</span>
+                                        <span class="text-center p-0 m-0" style="width: 15.0%;font-size:calc(.85em + 0.15vmin)">Tipo:</span>
+                                        <span class="text-center p-0 m-0" style="width: 15.0%;font-size:calc(.85em + 0.15vmin)">Color:</span>
+                                        <span class="text-center p-0 m-0" style="width: 15.0%;font-size:calc(.85em + 0.15vmin)">Señal:</span>
+                                        <span class="text-center p-0 m-0" style="width: 14.0%;font-size:calc(.85em + 0.15vmin)">Acciones:</span>
+                                    </div>
+                                    <div class="p-2" id="AgregarDispositivoModalVariables" style="overflow-y: auto;height:200px;">
+                                        <p class="alert alert-warning text-center mt-2">No hay Variables</p>
+                                    </div>
+                                    <!-- Contenido de las variables -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Agrear Dispositivo Modal-->
+
+        <!-- Agregar Variable Modal -->
+        <div class="modal" id="AgregarVariableModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog  modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #4169E1;">
+                        <div class="media">
+                            <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                            </div>
+                        </div>
+                        <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                        <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                            aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-2 p-xl-4 p-lg-4 ">
+                        <h4 class=" text-center" id="AgregarVariableModallblTitle">Agregar Variable</h4>
+                        <div class="mt-4_5 p-2 border pb-2">
+                            <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                <span id="DriversCount" class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                    style="background-color: white;">Informacion</span>
+                            </div>
+                                <div class="font d-flex justify-content-center pb-3" id="AgregarVariableModalBody">
+                                <!-- Formulario de Informacion -->
+                                    <div id="AgregarVariableModalStatusDiv">
+                                        <img src="../img/loading.gif" id="AgregarVariableModalStatus" class="ml-auto mr-auto d-block" >
+                                        <h5 class="text-muted text-center" id="AgregarVariableModallblStatus">Cargando...</h5>
+                                    </div>
+                                    <div class="pt-4 d-none" style="width: 90%;" id="AgregarVariableModalFormDiv">
+                                            <form id="AgregarVariableModalForm" method="POST">
+                                                <div class="d-flex flex-row p-1">
+                                                    <span class="d-flex justify-content-end pr-3 my-auto" style="width: 45%;">Nombre:</span><input class="input-modern w-50" id="AgregarVariableModaltxtNombre" name="Nombre" type="text" placeholder="Nombre">
+                                                    <input type="hidden" name="GUID" id="AgregarVariableModaltxtGUID">
+                                                </div>
+                                                <div class="d-flex flex-row p-1">
+                                                        <span class="my-auto d-flex pr-3 justify-content-end" style="width: 45%;">Señal:</span>
+                                                        <select class="form-control w-50 p-0" name="Señal" id="AgregarVariableModalcmbSeñal">
+                                                            <option value="true">Analogico</option>
+                                                            <option value="false">Digital</option>
+                                                        </select>
+                                                </div>
+                                                <div class="d-flex flex-row p-1">
+                                                        <span class="text-center my-auto d-flex pr-3 justify-content-end" style="width: 45%;">Tipo:</span>
+                                                        <select class="form-control w-50 p-0" name="Tipo" id="AgregarVariableModalcmbTipo">
+                                                            <option value="false">Lectura</option>
+                                                            <option value="true">Escritura</option>
+                                                        </select>
+                                                </div>
+                                                <div class="d-flex flex-row p-1">
+                                                        <span class="text-center my-auto d-flex pr-3 justify-content-end" style="width: 45%;">Variable:</span>
+                                                        <select class="form-control w-50 p-0" name="PIN" id="AgregarVariableModalcmbVariable">
+                                                            <!-- Generado dinamicamente -->
+                                                        </select>
+                                                </div>
+                                                <div class="d-flex flex-row p-1">
+                                                    <span class="text-center my-auto d-flex pr-3 justify-content-end" style="width: 45%;">Color:</span>
+                                                    <select name="Color" class="w-50 bs-select selectpicker form-control color" id="AgregarVariableModalcmbColor" disabled>                                       
+                                                        <!-- Generados dinammicamente -->
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex flex-row p-1">
+                                                    <span class="text-center d-flex pr-3 justify-content-end my-auto"style="width: 45%;">Expresion:</span><input class="input-modern w-50" id="AgregarVariableModaltxtExpresion" type="text" name="Expresion" placeholder="(x+2)/2">
+                                                </div>
+                                                <div class="d-flex flex-row p-1">
+                                                    <span class="text-center d-flex pr-3 justify-content-end my-auto"style="width: 45%;">Notificar:</span><input name="NotificarCheck" id="AgregarVariableModalcheckNotificar" class="custom-checkbox my-auto" type="checkbox">
+                                                        <div class="d-flex flex-row p-0">
+                                                            <span class="my-auto">Si X es</span>
+                                                            <select name="NotificarComparador" id="AgregarVariableModalcmbNotificarComparador" class="form-control p-1" style="width: 44px;" disabled>
+                                                                <option class="notificar" value="->">></option>
+                                                                <option class="notificar" value="-<"><</option>
+                                                                <option class="notificar" value="==">==</option>
+                                                                <option class="notificar" value="!=">!=</option>
+                                                            </select>
+                                                            <input type="number" name="NotificarValor" id="AgregarVariableModalcmbNotificarValor" class="form-control p-0" style="width: 48px !important;" max="999" value="32" disabled>
+                                                        </div>
+                                                </div>
+                                                <div class="d-flex flex-row p-1">
+                                                    <span class="text-center my-auto d-flex pr-3 justify-content-end" style="width: 45%;">Nivel:</span>
+                                                    <select name="NotificarNivel" id="AgregarVariableModalcmbNotificarNivel" class="w-50 bs-select selectpicker form-control color" disabled>
+                                                            <option value="aqua" data-content="<i class='fa fa-circle red' style='color:#00ffff;'></i> Informativa"></option>
+                                                            <option value="green" data-content="<i class='fa fa-circle red' style='color:#008000;'></i> Normal"></option>
+                                                            <option value="orange" data-content="<i class='fa fa-circle red' style='color:#ffa500;'></i> Alta"></option>
+                                                            <option value="red" data-content="<i class='fa fa-circle red' style='color:#ff0000;'></i> Critica"></option>
+                                                            
+                                                    </select>
+                                                </div>
+                                                <div class="p-0 mt-3 w-100 d-flex justify-content-center">
+                                                    <button type="submit" class="button btn btn-white" id="AgregarVariableModalbtnAceptar">
+                                                        <span class="mr-1"><img src="../img/OK.png" class="img-fluid" alt=""></span>Aceptar
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                <!-- Formulario de Informacion-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Agregar Variable Modal -->
+
+        <!-- Nuevo Proyecto Modal -->
+        <div class="modal" id="AgregarProyectoModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog pb-2 modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #4169E1;">
+                        <div class="media">
+                            <img src="../img/UDB-Logo.png" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <h3 class="mt-3_5 font-weight-bold" style="color: #FAFA00;">SCADA</h3>
+                            </div>
+                        </div>
+                        <img src="../img/IIE-Logo.png" class="ml-auto mr-0 d-block mt-1" alt="">
+                        <button type="button" class="close text-white p-0 pt-1 pr-1 ml-2" data-dismiss="modal"
+                            aria-label="Close" style="margin: -1rem -1rem -1rem 0 !important;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                        <h4 class="text-center" id="AgregarDispositivolblTitle">Nuevo Proyecto</h4>
+                        <div class="mt-4_5 p-2 pb-2">
+                            <div class="border">
+                                    <div class=" buttons font d-flex justify-content-between pl-2 pr-2">
+                                            <span id="DriversCount" class="mr-2 pt-xl-2 pt-lg-2 pt-2_5 p-0"
+                                                style="background-color: white;">Informacion</span>   
+                                    </div>
+                                    <!-- Formulario de Informacion -->
+                                    <div class="p-3 d-flex justify-content-center">
+                                        <div>
+                                            <div class="d-flex flex-row p-2 ml-auto mr-auto d-block">
+                                                <span class="my-auto mr-2">Nombre:</span> <input id="AgregarProyectoModaltxtNombre" type="text" class="input-modern"
+                                                    placeholder="Nombre">
+                                            </div>  
+                                            <button class="button btn btn-white ml-auto mr-auto d-block" disabled type="submit" id="AgregarProyectoModalbtnAceptar"><span
+                                                class="mr-1"><img src="../img/OK.png" class="img-fluid"
+                                                    alt=""></span>Aceptar</button> 
+                                        </div>
+                                    <!-- Formulario de Informacion -->
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Nuevo Proyecto Modal -->
+
+ 
+        
+    <!-- Modales-->
+            
+    <script src="../js/jquery.js"></script>
+    <script src="../js/popper.js"></script>
+    <script src="../js/bootstrap.js"></script> 
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/moment.js"></script>
+    <script src="../js/daterangepicker.js"></script>
+    <script src="../js/datatables.js"></script>
+    <script src="../js/datatables-responsive.js"></script>
+    <script src="../js/bootstrap-datatables.js"></script>
+    <script src="../js/all.js"></script>
+    <script src="../js/toastr.js"></script>
+    <script src="../js/modules/color.js"></script>
+    <script type="module" src="../js/modules/main.js"></script>
+</body>
+</html>
+
+
+           
+
+<!--
+    Dispositivo
+<div class="border col-11 col-sm-11 col-md-6 col-lg-5 col-xl-4 driver p-1 row">
+            <span class="Title">Titulo</span>    
+            <div class="col-6 pt-2 pl-2 pb-0 mb-0" style="height: 85%;">
+                <div class="d-flex flex-row">
+                    <span class="bd-highlight">Estado:</span><p class="online bd-highlight mt-2_5 ml-1 mr-1"></p><span class="bd-highlight">Conectado</span> 
+                </div>
+                <img src="../img/NoImage.png" class="img-fluid pt-0" > 
+            </div>
+            <div class="col-6 pt-2 pl-2 pb-0 mb-0" style="height: 85%;">
+                <div class="d-flex justify-content-end mb-3">
+                    <span class="bd-highlight">Actualizando en 240</span>
+                </div>
+                <div class="variables">
+                    <div class="d-flex flex-row p-0 mb-0" >
+                        <p class="bd-highlight p-0 vTitle">Nombre muy largo</p><span class="bd-highlight ml-3 d-flex justify-content-end"><input type="number" min="0" max="255" value="255" class="form-control vEscrituraA" ></span>
+                    </div>
+                    <div class="d-flex flex-row  p-0 mt-0" >
+                        <p class="bd-highlight p-0 vTitle">Nombre muy largo</p><span class="bd-highlight ml-3">255</span>  
+                    </div>
+
+                    <div class="d-flex flex-row p-0 mb-0" >
+                        <p class="bd-highlight p-0 vTitle">Nombre muy largo</p><span class="bd-highlight ml-3 d-flex justify-content-end"><button class="btn btn-success vEscrituraD ">On</button></span>
+                    </div>
+                    <div class="d-flex flex-row  p-0 mt-0" >
+                        <p class="bd-highlight p-0 vTitle">Nombre muy largo</p><span class="bd-highlight ml-4 disconect" id="VariableValue"></span> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 pl-2 pb-0">
+                <p class="mb-0 mt-1 p-0">Ultima vez: 2/11/2019 15:35:56</p>
+            </div>
+    </div>  
+
+    Dispositivos Modal
+    <div class="row p-0 border container col-12">
+        <div class="col-4">
+            <img src="../img/NoImage.png" class="img-fluid pt-0">
+        </div>
+        <div class="col-6 pt-2">
+            <div class="d-flex flex-row">
+                <p class="mr-2">Nombre: </p><span class="content">{1}</span>
+            </div>
+            <div class="d-flex flex-row">
+                <p class="mr-2">ID: </p><span class="content">{2}</span>
+            </div>
+            <div class="d-flex flex-row">
+                <p class="mr-2">Token: </p><span class="content">{3}</span>
+            </div>
+            <p>Tiempo: <span class="content">{4}</span> </p>
+            <p># Variables: {5}</p>
+        </div>
+        <div class="col-2 p-0">
+            <button id="{6}" class="btn ml-auto mr-0 d-block DispositivosModalbtnCopiar"><span><img src="../img/Copiar.png"
+                        alt=""></span></button>
+            <div class="d-flex flex-row ">
+                <button id="{7}" class="btn DispositivosModalbtnEditar"><span><img src="../img/Editar.png"
+                            alt=""></span></button>
+                <button id="{8}" class="btn DispositivosModalbtnEliminar"><span><img src="../img/Eliminar.png"
+                            alt=""></span></button>
+            </div>
+        </div>
+    </div>
+                          
+
+-->
